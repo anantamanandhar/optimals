@@ -30,9 +30,12 @@ const NAV = [
     title: 'Optimisation Hub',
     icon: Zap,
     items: [
-      { label: 'Alphabet',    icon: Building2, pageKey: 'optimisation/alphabet' },
-      { label: 'Subsidiary',  icon: Landmark,  pageKey: 'optimisation/subsidiary' },
-      { label: 'Departments', icon: Users,     pageKey: 'optimisation/departments' },
+      { label: 'Alphabet',    icon: Building2,    pageKey: 'optimisation/alphabet' },
+      { label: 'Subsidiary',  icon: Landmark,     pageKey: 'optimisation/subsidiary' },
+      { label: 'Departments', icon: Users,        pageKey: 'optimisation/departments' },
+      { divider: 'Products' },
+      { label: 'O365',        icon: FileSpreadsheet, pageKey: 'optimisation/o365' },
+      { label: 'Sharepoint',  icon: FileSpreadsheet, pageKey: 'optimisation/sharepoint' },
     ],
   },
   {
@@ -99,17 +102,26 @@ export function Sidebar({ isOpen, onToggle, activePage, onNavigate }) {
             isOpen={isOpen}
             defaultOpen={section.defaultOpen ?? false}
           >
-            {section.items.map((item) => (
-              <SidebarNavItem
-                key={item.pageKey}
-                label={item.label}
-                icon={item.icon}
-                depth={1}
-                isOpen={isOpen}
-                active={activePage === item.pageKey}
-                onClick={() => onNavigate(item.pageKey)}
-              />
-            ))}
+            {section.items.map((item, idx) =>
+              item.divider ? (
+                isOpen && (
+                  <div key={idx} className="flex items-center gap-2 px-3 pt-3 pb-1">
+                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">{item.divider}</span>
+                    <div className="flex-1 h-px bg-gray-200" />
+                  </div>
+                )
+              ) : (
+                <SidebarNavItem
+                  key={item.pageKey}
+                  label={item.label}
+                  icon={item.icon}
+                  depth={1}
+                  isOpen={isOpen}
+                  active={activePage === item.pageKey}
+                  onClick={() => onNavigate(item.pageKey)}
+                />
+              )
+            )}
           </SidebarSection>
         ))}
       </div>

@@ -4,6 +4,8 @@ import { TopHeader } from './components/layout/TopHeader';
 import { DashboardPage } from './components/dashboard/DashboardPage';
 import { ForecastPage } from './components/forecast/ForecastPage';
 import { OptimisationPage } from './components/optimisation/OptimisationPage';
+import { SharepointPage } from './components/optimisation/SharepointPage';
+import { O365Page } from './components/optimisation/O365Page';
 import { useSidebar } from './hooks/useSidebar';
 
 function renderPage(page) {
@@ -12,6 +14,8 @@ function renderPage(page) {
     case 'optimisation/alphabet':     return <OptimisationPage defaultView="alphabet" />;
     case 'optimisation/subsidiary':   return <OptimisationPage defaultView="subsidiary" />;
     case 'optimisation/departments':  return <OptimisationPage defaultView="department" />;
+    case 'optimisation/o365':         return <O365Page />;
+    case 'optimisation/sharepoint':   return <SharepointPage />;
     default: return <DashboardPage />;
   }
 }
