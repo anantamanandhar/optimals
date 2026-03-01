@@ -1,0 +1,118 @@
+import {
+  LayoutDashboard, TrendingUp, Zap, Package,
+  PanelLeft, Plus, Building2, Users, Landmark,
+  FileSpreadsheet, Cloud, HardDrive, Box, Calendar,
+} from 'lucide-react';
+import { SidebarSection } from './SidebarSection';
+import { SidebarNavItem } from './SidebarNavItem';
+
+const NAV = [
+  {
+    title: 'Recharge Hub',
+    icon: LayoutDashboard,
+    defaultOpen: true,
+    items: [
+      { label: 'Alphabet',    icon: Building2, pageKey: 'recharge/alphabet' },
+      { label: 'Subsidiary',  icon: Landmark,  pageKey: 'recharge/subsidiary' },
+      { label: 'Departments', icon: Users,     pageKey: 'recharge/departments' },
+    ],
+  },
+  {
+    title: 'Forecast Hub',
+    icon: TrendingUp,
+    items: [
+      { label: 'Alphabet',    icon: Building2, pageKey: 'forecast/alphabet' },
+      { label: 'Subsidiary',  icon: Landmark,  pageKey: 'forecast/subsidiary' },
+      { label: 'Departments', icon: Users,     pageKey: 'forecast/departments' },
+    ],
+  },
+  {
+    title: 'Optimisation Hub',
+    icon: Zap,
+    items: [
+      { label: 'Alphabet',    icon: Building2, pageKey: 'optimisation/alphabet' },
+      { label: 'Subsidiary',  icon: Landmark,  pageKey: 'optimisation/subsidiary' },
+      { label: 'Departments', icon: Users,     pageKey: 'optimisation/departments' },
+    ],
+  },
+  {
+    title: 'Product and Services View',
+    icon: Package,
+    items: [
+      { label: 'O365',             icon: FileSpreadsheet, pageKey: 'products/o365' },
+      { label: 'Sharepoint',       icon: FileSpreadsheet, pageKey: 'products/sharepoint' },
+      { label: 'Adobe',            icon: FileSpreadsheet, pageKey: 'products/adobe' },
+      { label: 'Google Cloud',     icon: Cloud,           pageKey: 'products/gcp' },
+      { label: 'AWS',              icon: Cloud,           pageKey: 'products/aws' },
+      { label: 'Azure',            icon: Cloud,           pageKey: 'products/azure' },
+      { label: 'Google Workspace', icon: HardDrive,       pageKey: 'products/gworkspace' },
+      { label: 'Box',              icon: Box,             pageKey: 'products/box' },
+      { label: 'Monday',           icon: Calendar,        pageKey: 'products/monday' },
+    ],
+  },
+];
+
+export function Sidebar({ isOpen, onToggle, activePage, onNavigate }) {
+  return (
+    <aside
+      className={`
+        flex flex-col bg-white border-r border-gray-200 h-screen
+        transition-all duration-300 ease-in-out shrink-0
+        ${isOpen ? 'w-64' : 'w-14'}
+      `}
+    >
+      {/* Logo + Toggle */}
+      <div className="flex items-center h-14 px-3 border-b border-gray-200 gap-2">
+        <button
+          onClick={onToggle}
+          className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors shrink-0"
+          title="Toggle sidebar"
+        >
+          <PanelLeft size={20} className="text-teal-600" />
+        </button>
+        {isOpen && (
+          <span className="text-lg font-bold text-gray-900 tracking-tight">
+            <span className="text-teal-600">◎</span> Optimals
+          </span>
+        )}
+      </div>
+
+      {/* Create button */}
+      <div className="px-3 py-3 border-b border-gray-100">
+        <button className={`
+          flex items-center gap-2 rounded-lg border-2 border-dashed border-gray-300
+          hover:border-teal-400 hover:bg-teal-50 transition-colors text-sm font-medium text-gray-600 hover:text-teal-700
+          ${isOpen ? 'w-full px-3 py-2' : 'p-2 justify-center w-full'}
+        `}>
+          <Plus size={16} />
+          {isOpen && 'Create'}
+        </button>
+      </div>
+
+      {/* Sections */}
+      <div className="flex-1 overflow-y-auto px-2 py-2">
+        {NAV.map((section) => (
+          <SidebarSection
+            key={section.title}
+            title={section.title}
+            icon={section.icon}
+            isOpen={isOpen}
+            defaultOpen={section.defaultOpen ?? false}
+          >
+            {section.items.map((item) => (
+              <SidebarNavItem
+                key={item.pageKey}
+                label={item.label}
+                icon={item.icon}
+                depth={1}
+                isOpen={isOpen}
+                active={activePage === item.pageKey}
+                onClick={() => onNavigate(item.pageKey)}
+              />
+            ))}
+          </SidebarSection>
+        ))}
+      </div>
+    </aside>
+  );
+}
