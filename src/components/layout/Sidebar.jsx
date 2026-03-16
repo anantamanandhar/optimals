@@ -1,10 +1,51 @@
+import { useState } from 'react';
 import {
   LayoutDashboard, TrendingUp, Zap, Package,
   PanelLeft, Plus, Building2, Users, Landmark,
   FileSpreadsheet, Cloud, HardDrive, Box, Calendar,
+  ChevronRight, Ghost, Layers, Brain,
 } from 'lucide-react';
 import { SidebarSection } from './SidebarSection';
 import { SidebarNavItem } from './SidebarNavItem';
+
+function SidebarSubGroup({ label, icon: Icon, subItems, isOpen, activePage, onNavigate }) {
+  const hasActive = subItems.some(i => i.pageKey === activePage);
+  const [expanded, setExpanded] = useState(hasActive);
+  return (
+    <div>
+      <button
+        onClick={() => isOpen && setExpanded(e => !e)}
+        className={`
+          w-full flex items-center gap-3 py-2 pl-8 pr-3 rounded-lg text-sm transition-colors
+          ${hasActive ? 'text-teal-700 font-medium' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}
+        `}
+      >
+        {Icon && <Icon size={16} className="shrink-0" />}
+        {isOpen && (
+          <>
+            <span className="flex-1 text-left truncate">{label}</span>
+            <ChevronRight size={12} className={`transition-transform ${expanded ? 'rotate-90' : ''}`} />
+          </>
+        )}
+      </button>
+      {isOpen && expanded && (
+        <div>
+          {subItems.map(item => (
+            <SidebarNavItem
+              key={item.pageKey}
+              label={item.label}
+              icon={item.icon}
+              depth={2}
+              isOpen={isOpen}
+              active={activePage === item.pageKey}
+              onClick={() => onNavigate(item.pageKey)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const NAV = [
   {
@@ -34,8 +75,21 @@ const NAV = [
       { label: 'Subsidiary',  icon: Landmark,     pageKey: 'optimisation/subsidiary' },
       { label: 'Departments', icon: Users,        pageKey: 'optimisation/departments' },
       { divider: 'Products' },
-      { label: 'O365',        icon: FileSpreadsheet, pageKey: 'optimisation/o365' },
+      { label: 'O365', icon: FileSpreadsheet, subItems: [
+        { label: 'Ghost accounts',      icon: Ghost,           pageKey: 'optimisation/o365' },
+        { label: 'Duplicate Licences',  icon: FileSpreadsheet, pageKey: 'optimisation/o365/duplicate' },
+        { label: 'O365 Usage',          icon: TrendingUp,      pageKey: 'optimisation/o365/usage' },
+      ]},
       { label: 'Sharepoint',  icon: FileSpreadsheet, pageKey: 'optimisation/sharepoint' },
+      { label: 'AI', icon: Brain, subItems: [
+        { label: 'AI Usage',         icon: TrendingUp, pageKey: 'optimisation/ai/usage' },
+        { label: 'AI Optimisation',  icon: Zap,        pageKey: 'optimisation/ai/optimisation' },
+      ]},
+      { label: 'Adobe', icon: Layers, subItems: [
+        { label: 'Adobe Usage',           icon: TrendingUp,      pageKey: 'optimisation/adobe/usage' },
+        { label: 'Adobe Ghost Licences',  icon: Ghost,           pageKey: 'optimisation/adobe/ghost' },
+        { label: 'Adobe Duplicate',       icon: FileSpreadsheet, pageKey: 'optimisation/adobe/duplicate' },
+      ]},
     ],
   },
   {
@@ -110,6 +164,16 @@ export function Sidebar({ isOpen, onToggle, activePage, onNavigate }) {
                     <div className="flex-1 h-px bg-gray-200" />
                   </div>
                 )
+              ) : item.subItems ? (
+                <SidebarSubGroup
+                  key={item.label}
+                  label={item.label}
+                  icon={item.icon}
+                  subItems={item.subItems}
+                  isOpen={isOpen}
+                  activePage={activePage}
+                  onNavigate={onNavigate}
+                />
               ) : (
                 <SidebarNavItem
                   key={item.pageKey}

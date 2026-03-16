@@ -6,15 +6,31 @@ import { ForecastPage } from './components/forecast/ForecastPage';
 import { OptimisationPage } from './components/optimisation/OptimisationPage';
 import { SharepointPage } from './components/optimisation/SharepointPage';
 import { O365Page } from './components/optimisation/O365Page';
+import { O365DuplicatePage } from './components/optimisation/O365DuplicatePage';
+import { O365UsagePage } from './components/optimisation/O365UsagePage';
+import { AdobeUsagePage } from './components/optimisation/AdobeUsagePage';
+import { AdobeGhostPage } from './components/optimisation/AdobeGhostPage';
+import { AdobeDuplicatePage } from './components/optimisation/AdobeDuplicatePage';
+import { AIUsagePage } from './components/optimisation/AIUsagePage';
+import { AIOptimisationPage } from './components/optimisation/AIOptimisationPage';
+import { RechargeSubsidiaryPage } from './components/recharge/RechargeSubsidiaryPage';
 import { useSidebar } from './hooks/useSidebar';
 
 function renderPage(page) {
   switch (page) {
+    case 'recharge/subsidiary':       return <RechargeSubsidiaryPage />;
     case 'forecast/alphabet':         return <ForecastPage />;
     case 'optimisation/alphabet':     return <OptimisationPage defaultView="alphabet" />;
     case 'optimisation/subsidiary':   return <OptimisationPage defaultView="subsidiary" />;
     case 'optimisation/departments':  return <OptimisationPage defaultView="department" />;
-    case 'optimisation/o365':         return <O365Page />;
+    case 'optimisation/o365':           return <O365Page />;
+    case 'optimisation/o365/duplicate': return <O365DuplicatePage />;
+    case 'optimisation/o365/usage':     return <O365UsagePage />;
+    case 'optimisation/adobe/usage':    return <AdobeUsagePage />;
+    case 'optimisation/adobe/ghost':      return <AdobeGhostPage />;
+    case 'optimisation/adobe/duplicate':  return <AdobeDuplicatePage />;
+    case 'optimisation/ai/usage':         return <AIUsagePage />;
+    case 'optimisation/ai/optimisation':  return <AIOptimisationPage />;
     case 'optimisation/sharepoint':   return <SharepointPage />;
     default: return <DashboardPage />;
   }

@@ -1,5 +1,5 @@
 export function SidebarNavItem({ label, icon: Icon, depth = 0, active = false, isOpen, onClick }) {
-  const indent = depth === 1 ? 'pl-8' : 'pl-3';
+  const indent = depth === 2 ? 'pl-12' : depth === 1 ? 'pl-8' : 'pl-3';
   return (
     <button
       onClick={onClick}
